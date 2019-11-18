@@ -30,7 +30,7 @@ public class MapGraph {
         System.out.println("Moving on to second stage!");
     }
 
-    public void expandNode(Node node, Node goalNode, ArrayList<Node> priorityQueue){
+    private void expandNode(Node node, Node goalNode, ArrayList<Node> priorityQueue){
 
         System.out.println("Expanding: " + node);
 
