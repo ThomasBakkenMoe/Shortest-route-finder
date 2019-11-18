@@ -26,7 +26,8 @@ public class MapGraph {
                 break;
             }
         }
-
+        
+        //TODO: Actually create the second stage and end-printout :P
         System.out.println("Moving on to second stage!");
     }
 
