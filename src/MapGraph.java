@@ -1,8 +1,8 @@
-import java.util.ArrayList;
-
 public class MapGraph {
 
-    public void AStar(){
+    public void AStar(Node[] nodeArray, Edge[] edgeArray, Node startingNode, Node goalNode){
+
+
 
     }
 
@@ -13,9 +13,10 @@ public class MapGraph {
         MapGraph mapGraph = new MapGraph();
         Loader loader = new Loader();
 
-        ArrayList<Node> nodeList = new ArrayList<>();
-        ArrayList<Edge> edgeList = new ArrayList<>();
+        Node[] nodeArray = loader.loadNodes("noder.txt");
 
-        loader.loadNodesAndEdgesFromFile("noder.txt", "kanter.txt", nodeList, edgeList);
+        Edge[] edgeArray = loader.loadEdges("kanter.txt", nodeArray);
+
+        mapGraph.AStar(nodeArray, edgeArray, nodeArray[0], nodeArray[1]);
     }
 }

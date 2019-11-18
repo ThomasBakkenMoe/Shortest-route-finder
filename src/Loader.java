@@ -4,16 +4,13 @@ import java.util.ArrayList;
 
 public class Loader {
 
-    public void loadNodesAndEdgesFromFile(String filenameNodes, String filenameEdges, ArrayList<Node> nodeList, ArrayList<Edge> edgeList) throws Exception {
-        loadNodes(filenameNodes, nodeList);
-        loadEdges(filenameEdges, nodeList, edgeList);
-    }
-
-    private void loadNodes(String filename, ArrayList<Node> nodeList) throws Exception{
+    public Node[] loadNodes(String filename) throws Exception{
         FileReader fileReader = new FileReader(filename);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         int numberOfNodes = Integer.parseInt(bufferedReader.readLine().replaceAll("\\s", ""));
+
+        Node[] nodeArray = new Node[numberOfNodes];
 
         String currentLine = "";
         Node newNode;
@@ -25,16 +22,19 @@ public class Loader {
             newNode.setLatitude(Double.parseDouble(currentLineArray[1]));
             newNode.setLongitude(Double.parseDouble(currentLineArray[2]));
 
-            nodeList.add(i, newNode);
-            //System.out.println("Loaded node: " + newNode);
+            nodeArray[i] = newNode;
         }
+
+        return nodeArray;
     }
 
-    private void loadEdges(String filename, ArrayList<Node> nodeList, ArrayList<Edge> edgeList) throws Exception{
+    public Edge[] loadEdges(String filename, Node[] nodeArray) throws Exception{
         FileReader fileReader = new FileReader(filename);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
 
         int numberOfEdges = Integer.parseInt(bufferedReader.readLine().replaceAll("\\s", ""));
+
+        Edge[] edgeArray = new Edge[numberOfEdges];
 
         String currentLine = "";
         Edge newEdge;
@@ -42,10 +42,11 @@ public class Loader {
         for (int i = 0; i < numberOfEdges; i++) {
             currentLine = bufferedReader.readLine();
             String[] currentLineArray = currentLine.trim().split("\\s+");
-            newEdge = new Edge(nodeList.get(Integer.parseInt(currentLineArray[0])), nodeList.get(Integer.parseInt(currentLineArray[1])), Integer.parseInt(currentLineArray[2]) * 100, Integer.parseInt(currentLineArray[3]), Integer.parseInt(currentLineArray[4]));
+            newEdge = new Edge(nodeArray[Integer.parseInt(currentLineArray[0])], nodeArray[Integer.parseInt(currentLineArray[1])], Integer.parseInt(currentLineArray[2]) * 100, Integer.parseInt(currentLineArray[3]), Integer.parseInt(currentLineArray[4]));
 
-            edgeList.add(i, newEdge);
-            //System.out.println("Loaded edge: " + edgeList);
+            edgeArray[i] = newEdge;
         }
+
+        return edgeArray;
     }
 }
