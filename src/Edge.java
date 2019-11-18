@@ -2,12 +2,16 @@ public class Edge {
     private Node fromNode;
     private Node toNode;
     private Edge opposingEdge;
-    private int cost = 0;
+    private int time = 0; // Time in seconds
+    private int length = 0; // Length in meters
+    private int speed = 0; // Speed in km/h
 
-    public Edge(Node fromNode, Node toNode, int cost){
+    public Edge(Node fromNode, Node toNode, int time, int length, int speed){
         this.fromNode = fromNode;
         this.toNode = toNode;
-        this.cost = cost;
+        this.time = time;
+        this.length = length;
+        this.speed = speed;
     }
 
     @Override
@@ -46,11 +50,27 @@ public class Edge {
         this.opposingEdge = opposingEdge;
     }
 
-    public int getCost() {
-        return cost;
+    public int getTime() {
+        return time;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setTime(int time) {
+        this.time = time;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }
