@@ -6,6 +6,17 @@ import java.util.PriorityQueue;
 
 public class MapGraph {
 
+    public void reset(Node[] nodeArray){
+
+        for (Node node:nodeArray) {
+            node.setPriority(1000000000);
+            node.setCost(1000000000);
+            node.setDiscovered(false);
+            node.setExpanded(false);
+            node.setDirectdistanceCalculated(false);
+        }
+    }
+
     public void AStar(Node startingNode, Node goalNode, String outputFile, boolean djikstra) throws Exception{
 
 
@@ -21,7 +32,7 @@ public class MapGraph {
             currentNode = priorityQueue.poll();
 
             if (currentNode != null && currentNode != goalNode){
-                expandNode(currentNode, goalNode, priorityQueue);
+                expandNode(currentNode, goalNode, priorityQueue, djikstra);
             }else{
                 break;
             }
@@ -38,7 +49,7 @@ public class MapGraph {
         printResult(startingNode, goalNode, outputFile);
     }
 
-    private void expandNode(Node node, Node goalNode, PriorityQueue<Node> priorityQueue){
+    private void expandNode(Node node, Node goalNode, PriorityQueue<Node> priorityQueue, boolean djikstra){
 
         //System.out.println("Expanding: " + node);
 
@@ -51,18 +62,27 @@ public class MapGraph {
                 edge.getToNode().setPreviousNode(node);
             }
 
-            if (edge.getToNode().hasDirectdistanceCalculated()){
-                edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+            if (djikstra){
+
+                edge.getToNode().setPriority(edge.getToNode().getCost());
+
             }else {
-                edge.getToNode().calculateDirectDistanceToNode(goalNode);
-                edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+                if (edge.getToNode().hasDirectdistanceCalculated()){
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+                }else {
+                    edge.getToNode().calculateDirectDistanceToNode(goalNode);
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+                }
             }
 
-            if (!edge.getToNode().isExpanded()){
 
-                while (priorityQueue.contains(edge.getToNode())){
+
+            if (!edge.getToNode().isExpanded()){
+                if (edge.getToNode().isDiscovered()){
                     priorityQueue.remove(edge.getToNode());
                 }
+
+                edge.getToNode().setDiscovered(true);
                 priorityQueue.add(edge.getToNode());
             }
         }
@@ -83,7 +103,13 @@ public class MapGraph {
 
             nodePathList.add(currentNode);
 
+            System.out.println("Adding node: " + currentNode.getNodeNum());
+
             prevNode = currentNode.getPreviousNode();
+
+            if (prevNode == null){
+                System.out.println("PrevNode is null!!!");
+            }
 
             for (Edge edge: prevNode.getOutgoingEdgeList()) {
                 if (edge.getToNode() == currentNode){
@@ -120,6 +146,12 @@ public class MapGraph {
 
         System.out.println("Beginning program");
 
-        mapGraph.AStar(nodeArray[2460904], nodeArray[2419175], "output.txt", false);
+        System.out.println("A*");
+        mapGraph.AStar(nodeArray[2847023], nodeArray[4687831], "output.txt", false);
+
+        mapGraph.reset(nodeArray);
+
+        System.out.println("Djikstra");
+        mapGraph.AStar(nodeArray[2847023], nodeArray[4687831], "outputDjikstra.txt", true);
     }
 }

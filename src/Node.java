@@ -10,6 +10,7 @@ public class Node implements Comparable{
     private Node previousNode;
     private ArrayList<Edge> outgoingEdgeList = new ArrayList<>();
     private boolean expanded = false;
+    private boolean discovered = false;
     private boolean directdistanceCalculated = false;
 
     private double latitude = 0.0;
@@ -98,6 +99,10 @@ public class Node implements Comparable{
         return directdistanceCalculated;
     }
 
+    public void setDirectdistanceCalculated(boolean directdistanceCalculated){
+        this.directdistanceCalculated = directdistanceCalculated;
+    }
+
     public double getDirectDistance() {
         return directDistance;
     }
@@ -124,5 +129,13 @@ public class Node implements Comparable{
             return priority - otherNode.getPriority();
         }
         return 0;
+    }
+
+    public boolean isDiscovered() {
+        return discovered;
+    }
+
+    public void setDiscovered(boolean discovered) {
+        this.discovered = discovered;
     }
 }
