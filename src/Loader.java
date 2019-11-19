@@ -25,6 +25,9 @@ public class Loader {
             nodeArray[i] = newNode;
         }
 
+        bufferedReader.close();
+        fileReader.close();
+
         return nodeArray;
     }
 
@@ -47,6 +50,9 @@ public class Loader {
             newEdge.getFromNode().getOutgoingEdgeList().add(newEdge);
             edgeArray[i] = newEdge;
         }
+
+        bufferedReader.close();
+        fileReader.close();
 
         return edgeArray;
     }

@@ -28,15 +28,15 @@ public class Node {
 
     @Override
     public String toString() {
-        return "" + nodeNum;
+        return "" + nodeNum + " lat: " + latitude + " long: " + longitude + " Prev. node: " + previousNode;
     }
 
     public int getCost() {
         return cost;
     }
 
-    public void setCost(int length) {
-        this.cost = length;
+    public void setCost(int time) {
+        this.cost = time;
     }
 
     public Node getPreviousNode() {

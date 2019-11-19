@@ -16,6 +16,7 @@ public class MapGraph {
         Node currentNode;
         ArrayList<Node> priorityQueue = new ArrayList<>();
         priorityQueue.add(startingNode);
+        startingNode.setCost(0);
         while(true){
 
             currentNode = priorityQueue.remove(0);
@@ -29,6 +30,8 @@ public class MapGraph {
         
         //TODO: Actually create the second stage and end-printout :P
         System.out.println("Moving on to second stage!");
+
+        System.out.println(goalNode.getPreviousNode());
     }
 
     private void expandNode(Node node, Node goalNode, ArrayList<Node> priorityQueue){
@@ -43,6 +46,7 @@ public class MapGraph {
 
             if (edge.getToNode().getCost() > node.getCost() + edge.getTime()){
                 edge.getToNode().setCost(node.getCost() + edge.getTime());
+                edge.getToNode().setPreviousNode(node);
             }
 
             if (edge.getToNode().hasDirectdistanceCalculated()){
