@@ -1,11 +1,16 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.PriorityQueue;
 
 public class MapGraph {
 
-    public void AStar(Node[] nodeArray, Edge[] edgeArray, Node startingNode, Node goalNode, String outputFile, boolean djikstra) throws Exception{
+    public void AStar(Node startingNode, Node goalNode, String outputFile, boolean djikstra) throws Exception{
+
+
+        Date start = new Date();
+        Date slutt;
 
         Node currentNode;
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
@@ -23,9 +28,12 @@ public class MapGraph {
         }
         
         //TODO: Actually create the second stage and end-printout :P
-        System.out.println("Moving on to second stage!");
+        //System.out.println("Moving on to second stage!");
 
         //System.out.println(goalNode.getPreviousNode());
+
+        slutt = new Date();
+        System.out.println("Time before print: " + (double) (slutt.getTime()-start.getTime()) + "ms");
 
         printResult(startingNode, goalNode, outputFile);
     }
@@ -86,14 +94,14 @@ public class MapGraph {
             currentNode = prevNode;
         }
 
-        bufferedWriter.write(Integer.toString(totalTime));
+        bufferedWriter.write(Integer.toString((totalTime / 3600)) + "t " + Integer.toString((totalTime % 3600) / 60) + "m " + Integer.toString((totalTime % 3600 % 60) / 60) + "s");
         bufferedWriter.newLine();
-        bufferedWriter.write(Integer.toString(totalDistance));
+        bufferedWriter.write(Integer.toString(totalDistance / 1000) + "km");
         bufferedWriter.newLine();
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
 
-            bufferedWriter.write(nodePathList.get(i).getLatitude() + " " + nodePathList.get(i).getLongitude());
+            bufferedWriter.write(nodePathList.get(i).getLatitude() + "," + nodePathList.get(i).getLongitude());
             bufferedWriter.newLine();
 
         }
@@ -110,6 +118,8 @@ public class MapGraph {
 
         Edge[] edgeArray = loader.loadEdges("kanter.txt", nodeArray);
 
-        mapGraph.AStar(nodeArray, edgeArray, nodeArray[2460904], nodeArray[1619007], "output.txt", false);
+        System.out.println("Beginning program");
+
+        mapGraph.AStar(nodeArray[2460904], nodeArray[2419175], "output.txt", false);
     }
 }
