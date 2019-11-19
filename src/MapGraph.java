@@ -14,6 +14,8 @@ public class MapGraph {
             node.setDiscovered(false);
             node.setExpanded(false);
             node.setDirectdistanceCalculated(false);
+            node.setDirectDistance(0.0);
+            node.setPreviousNode(null);
         }
     }
 
@@ -27,15 +29,22 @@ public class MapGraph {
         PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(startingNode);
         startingNode.setCost(0);
+        int iteration = 0;
         while(true){
 
             currentNode = priorityQueue.poll();
 
-            if (currentNode != null && currentNode != goalNode){
+            if (currentNode == null){
+                System.out.println("Current node is null! Iteration: " + iteration);
+            }
+
+            if (currentNode != goalNode){
                 expandNode(currentNode, goalNode, priorityQueue, djikstra);
             }else{
                 break;
             }
+
+            iteration++;
         }
         
         //TODO: Actually create the second stage and end-printout :P
@@ -60,6 +69,8 @@ public class MapGraph {
             if (edge.getToNode().getCost() > node.getCost() + edge.getTime()){
                 edge.getToNode().setCost(node.getCost() + edge.getTime());
                 edge.getToNode().setPreviousNode(node);
+            }else{
+                continue;
             }
 
             if (djikstra){
@@ -74,7 +85,6 @@ public class MapGraph {
                     edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
                 }
             }
-
 
 
             if (!edge.getToNode().isExpanded()){
@@ -103,7 +113,7 @@ public class MapGraph {
 
             nodePathList.add(currentNode);
 
-            System.out.println("Adding node: " + currentNode.getNodeNum());
+            //System.out.println("Adding node: " + currentNode.getNodeNum());
 
             prevNode = currentNode.getPreviousNode();
 
@@ -120,7 +130,11 @@ public class MapGraph {
             currentNode = prevNode;
         }
 
-        bufferedWriter.write(Integer.toString((totalTime / 3600)) + "t " + Integer.toString((totalTime % 3600) / 60) + "m " + Integer.toString((totalTime % 3600 % 60) / 60) + "s");
+        int hours = totalTime / 3600;
+        int minutes = (totalTime % 3600) / 60;
+        int seconds = totalTime % 60;
+
+        bufferedWriter.write(Integer.toString(hours) + "t " + Integer.toString(minutes) + "m " + Integer.toString(seconds) + "s");
         bufferedWriter.newLine();
         bufferedWriter.write(Integer.toString(totalDistance / 1000) + "km");
         bufferedWriter.newLine();
@@ -129,7 +143,6 @@ public class MapGraph {
 
             bufferedWriter.write(nodePathList.get(i).getLatitude() + "," + nodePathList.get(i).getLongitude());
             bufferedWriter.newLine();
-
         }
 
         bufferedWriter.close();
@@ -140,18 +153,19 @@ public class MapGraph {
         MapGraph mapGraph = new MapGraph();
         Loader loader = new Loader();
 
-        Node[] nodeArray = loader.loadNodes("noder.txt");
+        Node[] nodeArray = loader.loadNodes("noderIsland.txt");
 
-        Edge[] edgeArray = loader.loadEdges("kanter.txt", nodeArray);
+        Edge[] edgeArray = loader.loadEdges("kanterIsland.txt", nodeArray);
 
         System.out.println("Beginning program");
 
-        System.out.println("A*");
-        mapGraph.AStar(nodeArray[2847023], nodeArray[4687831], "output.txt", false);
+        System.out.println("Djikstra");
+        mapGraph.AStar(nodeArray[30236], nodeArray[8136], "output.txt", true);
 
         mapGraph.reset(nodeArray);
 
-        System.out.println("Djikstra");
-        mapGraph.AStar(nodeArray[2847023], nodeArray[4687831], "outputDjikstra.txt", true);
+        System.out.println("A*");
+        mapGraph.AStar(nodeArray[30236], nodeArray[8136], "outputDjikstra.txt", false);
     }
 }
+//2847023
