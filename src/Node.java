@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class Node {
+public class Node implements Comparable{
 
     private static final int r = 6371; // Radius of Earth (in km)
     private int nodeNum;
@@ -112,5 +112,17 @@ public class Node {
 
     public void setPriority(int priority) {
         this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+
+        Node otherNode;
+        if (o instanceof Node){
+
+            otherNode = (Node) o;
+            return priority - otherNode.getPriority();
+        }
+        return 0;
     }
 }

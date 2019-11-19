@@ -1,27 +1,20 @@
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class MapGraph {
 
-    private class SortByPriority implements Comparator<Node>{
-
-        @Override
-        public int compare(Node n1, Node n2) {
-            return n1.getPriority() - n2.getPriority();
-        }
-    }
-
-    public void AStar(Node[] nodeArray, Edge[] edgeArray, Node startingNode, Node goalNode){
+    public void AStar(Node[] nodeArray, Edge[] edgeArray, Node startingNode, Node goalNode, boolean djikstra){
 
         Node currentNode;
-        ArrayList<Node> priorityQueue = new ArrayList<>();
+        PriorityQueue<Node> priorityQueue = new PriorityQueue<>();
         priorityQueue.add(startingNode);
         startingNode.setCost(0);
         while(true){
 
-            currentNode = priorityQueue.remove(0);
+            currentNode = priorityQueue.poll();
 
-            if (currentNode != goalNode){
+            if (currentNode != null && currentNode != goalNode){
                 expandNode(currentNode, goalNode, priorityQueue);
             }else{
                 break;
@@ -32,13 +25,13 @@ public class MapGraph {
         System.out.println("Moving on to second stage!");
 
         System.out.println(goalNode.getPreviousNode());
+
+        printResult(startingNode, goalNode);
     }
 
-    private void expandNode(Node node, Node goalNode, ArrayList<Node> priorityQueue){
+    private void expandNode(Node node, Node goalNode, PriorityQueue<Node> priorityQueue){
 
         System.out.println("Expanding: " + node);
-
-        SortByPriority sortByPriority = new SortByPriority();
 
         node.setExpanded(true);
 
@@ -58,8 +51,15 @@ public class MapGraph {
 
             if (!edge.getToNode().isExpanded()){
                 priorityQueue.add(edge.getToNode());
-                priorityQueue.sort(sortByPriority);
             }
+        }
+    }
+
+    private void printResult(Node startingNode, Node goalNode){
+        Node currentNode = goalNode;
+
+        while (currentNode != goalNode){
+            break;
         }
     }
 
@@ -72,6 +72,6 @@ public class MapGraph {
 
         Edge[] edgeArray = loader.loadEdges("kanter.txt", nodeArray);
 
-        mapGraph.AStar(nodeArray, edgeArray, nodeArray[0], nodeArray[2]);
+        mapGraph.AStar(nodeArray, edgeArray, nodeArray[0], nodeArray[2], false);
     }
 }
