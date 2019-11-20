@@ -79,10 +79,10 @@ public class MapGraph {
 
             }else {
                 if (edge.getToNode().hasDirectdistanceCalculated()){
-                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 3600) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
                 }else {
                     edge.getToNode().calculateDirectDistanceToNode(goalNode);
-                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 1000 / 130 * 3600) + edge.getToNode().getCost());
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 3600) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
                 }
             }
 
@@ -168,4 +168,3 @@ public class MapGraph {
         mapGraph.AStar(nodeArray[30236], nodeArray[8136], "outputDjikstra.txt", false);
     }
 }
-//2847023
