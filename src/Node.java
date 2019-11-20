@@ -90,7 +90,11 @@ public class Node implements Comparable{
 
         directdistanceCalculated = true;
 
-        setDirectDistance(2 * r * Math.asin(Math.sqrt(Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) + Math.cos(Math.toRadians(latitude)) * Math.cos(Math.toRadians(node.getLatitude())) * Math.pow(Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)), 2))));
+        setDirectDistance(2 * r * Math.asin(Math.sqrt(
+                Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) * Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) +
+                        Math.cos(Math.toRadians(latitude)) *
+                                Math.cos(Math.toRadians(node.getLatitude())) *
+                                Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)) * Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)))));
 
         return directDistance;
     }

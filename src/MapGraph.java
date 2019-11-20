@@ -6,6 +6,8 @@ import java.util.PriorityQueue;
 
 public class MapGraph {
 
+    int nodesChecked = 0;
+
     public void reset(Node[] nodeArray){
 
         for (Node node:nodeArray) {
@@ -16,6 +18,8 @@ public class MapGraph {
             node.setDirectdistanceCalculated(false);
             node.setDirectDistance(0.0);
             node.setPreviousNode(null);
+
+            nodesChecked = 0;
         }
     }
 
@@ -41,6 +45,7 @@ public class MapGraph {
             if (currentNode != goalNode){
                 expandNode(currentNode, goalNode, priorityQueue, djikstra);
             }else{
+                System.out.println("Checked " + nodesChecked + " nodes.");
                 break;
             }
 
@@ -65,6 +70,8 @@ public class MapGraph {
         node.setExpanded(true);
 
         for (Edge edge: node.getOutgoingEdgeList()) {
+
+            nodesChecked++;
 
             if (edge.getToNode().getCost() > node.getCost() + edge.getTime()){
                 edge.getToNode().setCost(node.getCost() + edge.getTime());
@@ -106,6 +113,7 @@ public class MapGraph {
 
         int totalTime = goalNode.getCost(); // Time in seconds
         int totalDistance = 0;
+        int amountOfNodes = 0;
 
         ArrayList<Node> nodePathList = new ArrayList<>();
 
@@ -127,6 +135,8 @@ public class MapGraph {
                 }
             }
 
+            amountOfNodes++;
+
             currentNode = prevNode;
         }
 
@@ -137,6 +147,8 @@ public class MapGraph {
         bufferedWriter.write(Integer.toString(hours) + "t " + Integer.toString(minutes) + "m " + Integer.toString(seconds) + "s");
         bufferedWriter.newLine();
         bufferedWriter.write(Integer.toString(totalDistance / 1000) + "km");
+        bufferedWriter.newLine();
+        bufferedWriter.write("Nodes traversed: " + Integer.toString(amountOfNodes));
         bufferedWriter.newLine();
 
         for (int i = nodePathList.size() - 1; i >= 0; i--) {
@@ -153,18 +165,18 @@ public class MapGraph {
         MapGraph mapGraph = new MapGraph();
         Loader loader = new Loader();
 
-        Node[] nodeArray = loader.loadNodes("noderIsland.txt");
+        Node[] nodeArray = loader.loadNodes("noder.txt");
 
-        Edge[] edgeArray = loader.loadEdges("kanterIsland.txt", nodeArray);
+        loader.loadEdges("kanter.txt", nodeArray);
 
         System.out.println("Beginning program");
 
         System.out.println("Djikstra");
-        mapGraph.AStar(nodeArray[30236], nodeArray[8136], "output.txt", true);
+        mapGraph.AStar(nodeArray[2076501], nodeArray[2419175], "outputDjikstra.txt", true);
 
         mapGraph.reset(nodeArray);
 
         System.out.println("A*");
-        mapGraph.AStar(nodeArray[30236], nodeArray[8136], "outputDjikstra.txt", false);
+        mapGraph.AStar(nodeArray[2076501], nodeArray[2419175], "output.txt", false);
     }
 }
