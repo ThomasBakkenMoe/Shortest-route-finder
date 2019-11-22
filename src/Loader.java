@@ -45,7 +45,7 @@ public class Loader {
         for (int i = 0; i < numberOfEdges; i++) {
             currentLine = bufferedReader.readLine();
             String[] currentLineArray = currentLine.trim().split("\\s+");
-            newEdge = new Edge(nodeArray[Integer.parseInt(currentLineArray[0])], nodeArray[Integer.parseInt(currentLineArray[1])], Integer.parseInt(currentLineArray[2]) / 100, Integer.parseInt(currentLineArray[3]), Integer.parseInt(currentLineArray[4]));
+            newEdge = new Edge(nodeArray[Integer.parseInt(currentLineArray[0])], nodeArray[Integer.parseInt(currentLineArray[1])], Integer.parseInt(currentLineArray[2]), Integer.parseInt(currentLineArray[3]), Integer.parseInt(currentLineArray[4]));
 
             newEdge.getFromNode().getOutgoingEdgeList().add(newEdge);
             edgeArray[i] = newEdge;

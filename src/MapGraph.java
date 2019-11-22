@@ -86,10 +86,10 @@ public class MapGraph {
 
             }else {
                 if (edge.getToNode().hasDirectdistanceCalculated()){
-                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 3600) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 360000) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
                 }else {
                     edge.getToNode().calculateDirectDistanceToNode(goalNode);
-                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 3600) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
+                    edge.getToNode().setPriority((int)(edge.getToNode().getDirectDistance() / 130 * 360000) /*Converts km to seconds of travel time*/ + edge.getToNode().getCost());
                 }
             }
 
@@ -140,9 +140,9 @@ public class MapGraph {
             currentNode = prevNode;
         }
 
-        int hours = totalTime / 3600;
-        int minutes = (totalTime % 3600) / 60;
-        int seconds = totalTime % 60;
+        int hours = totalTime / 360000;
+        int minutes = (totalTime % 360000) / 6000;
+        int seconds = (totalTime % 6000) / 100;
 
         bufferedWriter.write(Integer.toString(hours) + "t " + Integer.toString(minutes) + "m " + Integer.toString(seconds) + "s");
         bufferedWriter.newLine();
@@ -172,11 +172,11 @@ public class MapGraph {
         System.out.println("Beginning program");
 
         System.out.println("Djikstra");
-        mapGraph.AStar(nodeArray[2076501], nodeArray[2419175], "outputDjikstra.txt", true);
+        mapGraph.AStar(nodeArray[2617841], nodeArray[1491126], "outputDjikstra.txt", true);
 
         mapGraph.reset(nodeArray);
 
         System.out.println("A*");
-        mapGraph.AStar(nodeArray[2076501], nodeArray[2419175], "output.txt", false);
+        mapGraph.AStar(nodeArray[2617841], nodeArray[1491126], "output.txt", false);
     }
 }
