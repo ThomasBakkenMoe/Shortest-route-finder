@@ -216,7 +216,7 @@ public class MapGraph {
         System.out.println("Beginning program...");
 
         System.out.println("Djikstra");
-        mapGraph.FindShortestPath(nodeArray[fromNode], nodeArray[toNode], "outputDjikstra", true);
+        mapGraph.FindShortestPath(nodeArray[fromNode], nodeArray[toNode], "outputDijkstra", true);
 
         mapGraph.reset(nodeArray);
 
