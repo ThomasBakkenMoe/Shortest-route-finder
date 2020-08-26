@@ -1,3 +1,10 @@
+
+/**
+ * Class representing an edge between two nodes. We can look at this as a stretch of road.
+ * Contains information on how much time it takes to travel along the road, how long the road is, and how fast we can travel.
+ * The opposingEdge is the same road, traveling the opposite way.
+ * In this program's universe; all roads are one way, there just happens to be an opposing one-way road everywhere.
+ */
 public class Edge {
     private Node fromNode;
     private Node toNode;

@@ -8,6 +8,10 @@ public class MapGraph {
 
     int nodesChecked = 0;
 
+    /**
+     * Method to reset all the nodes in the nodeArray. Used if we want to run both A* and Dijkstra
+     * @param nodeArray
+     */
     public void reset(Node[] nodeArray){
 
         for (Node node:nodeArray) {
@@ -23,9 +27,18 @@ public class MapGraph {
         }
     }
 
-    public void FindShortestPath(Node startingNode, Node goalNode, String outputFileName, boolean djikstra) throws Exception{
+    /**
+     * A find the shortest path method that can use either the dijkstra of A* algorithm, based on a boolean parameter.
+     * This method times the algorithm and contains the main running loop.
+     * @param startingNode
+     * @param goalNode
+     * @param outputFileName
+     * @param dijkstra Whether or not the dijkstra algorithm is to be used. If false: A* is used.
+     * @throws Exception
+     */
+    public void FindShortestPath(Node startingNode, Node goalNode, String outputFileName, boolean dijkstra) throws Exception{
 
-
+        // Date objects used to time the algorithm
         Date start = new Date();
         Date slutt;
 
@@ -43,7 +56,7 @@ public class MapGraph {
             }
 
             if (currentNode != goalNode){
-                expandNode(currentNode, goalNode, priorityQueue, djikstra);
+                expandNode(currentNode, goalNode, priorityQueue, dijkstra);
             }else{
                 System.out.println("Checked " + nodesChecked + " nodes.");
                 break;
@@ -58,7 +71,7 @@ public class MapGraph {
         printResult(startingNode, goalNode, outputFileName);
     }
 
-    private void expandNode(Node node, Node goalNode, PriorityQueue<Node> priorityQueue, boolean djikstra){
+    private void expandNode(Node node, Node goalNode, PriorityQueue<Node> priorityQueue, boolean dijkstra){
 
         node.setExpanded(true);
 
@@ -73,12 +86,12 @@ public class MapGraph {
                 continue;
             }
 
-            if (djikstra){
+            if (dijkstra){
 
                 edge.getToNode().setPriority(edge.getToNode().getCost());
 
             }else {
-                /*Converts km to seconds of travel time*/
+
                 if (!edge.getToNode().hasDirectdistanceCalculated()) {
                     edge.getToNode().calculateDirectDistanceToNode(goalNode);
                 }
@@ -183,21 +196,22 @@ public class MapGraph {
 
     public static void main(String[] args) throws Exception{
 
-        int fromNode = 2460904; // Trondheim
-        int toNode = 2419175; // Oslo
-        String nodeFilepath = "nodesScandinavia.txt";
-        String edgeFilepath = "edgesScandinavia.txt";
+        int fromNode = 30236; // Reykjavík, the capital of Iceland
+        int toNode = 8136; // Akureyri, a town in the north of Iceland
+
+        String nodeFilepath = "nodesIceland.txt";
+        String edgeFilepath = "edgesIceland.txt";
 
         MapGraph mapGraph = new MapGraph();
         Loader loader = new Loader();
 
         System.out.println("Reading nodes...");
 
-        Node[] nodeArray = loader.loadNodes("nodesScandinavia.txt");
+        Node[] nodeArray = loader.loadNodes(nodeFilepath);
 
         System.out.println("Reading edges...");
 
-        loader.loadEdges("edgesScandinavia.txt", nodeArray);
+        loader.loadEdges(edgeFilepath, nodeArray);
 
         System.out.println("Beginning program...");
 

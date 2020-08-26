@@ -1,7 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.ArrayList;
 
+/**
+ * Class for loading edges and nodes from files into arrays.
+ */
 public class Loader {
 
     public Node[] loadNodes(String filename) throws Exception{

@@ -1,5 +1,10 @@
 import java.util.ArrayList;
 
+/**
+ * Class representing a Node
+ * The same node class is used in both Dijkstra and A*,
+ * and it contains the methods to calculate the distance to other nodes.
+ */
 public class Node implements Comparable{
 
     private static final int r = 6371; // Radius of Earth (in km)
@@ -20,16 +25,27 @@ public class Node implements Comparable{
         this.nodeNum = nodeNum;
     }
 
-    @Override
-    public boolean equals(Object obj) {
+    /**
+     * Method for calculating the distance between two points along the surface of a sphere (like the Earth)
+     * This method is used by A* to calculate the direct distance to the goal node, and thus setting the priority
+     * of expanding this node.
+     *
+     * @param node the node that we want to calculate the distance to.
+     * @return The calculated direct distance to the given node.
+     */
+    public double calculateDirectDistanceToNode(Node node){
 
-        return obj instanceof Node && ((Node) obj).nodeNum == this.nodeNum;
+        // Method for calculating the distance between two points along the surface of a sphere (like the Earth)
 
-    }
+        directdistanceCalculated = true;
 
-    @Override
-    public String toString() {
-        return "" + nodeNum + " lat: " + latitude + " long: " + longitude + " Prev. node: " + previousNode;
+        setDirectDistance(2 * r * Math.asin(Math.sqrt(
+                Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) * Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) +
+                        Math.cos(Math.toRadians(latitude)) *
+                                Math.cos(Math.toRadians(node.getLatitude())) *
+                                Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)) * Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)))));
+
+        return directDistance;
     }
 
     public int getCost() {
@@ -84,21 +100,6 @@ public class Node implements Comparable{
         this.longitude = longitude;
     }
 
-    public double calculateDirectDistanceToNode(Node node){
-
-        // Method for calculating the distance between two points along the surface of a sphere (like the Earth)
-
-        directdistanceCalculated = true;
-
-        setDirectDistance(2 * r * Math.asin(Math.sqrt(
-                Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) * Math.sin(Math.toRadians((latitude - node.getLatitude()) / 2)) +
-                        Math.cos(Math.toRadians(latitude)) *
-                                Math.cos(Math.toRadians(node.getLatitude())) *
-                                Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)) * Math.sin(Math.toRadians((longitude - node.getLongitude()) / 2)))));
-
-        return directDistance;
-    }
-
     public boolean hasDirectdistanceCalculated() {
         return directdistanceCalculated;
     }
@@ -123,6 +124,14 @@ public class Node implements Comparable{
         this.priority = priority;
     }
 
+    public boolean isDiscovered() {
+        return discovered;
+    }
+
+    public void setDiscovered(boolean discovered) {
+        this.discovered = discovered;
+    }
+
     @Override
     public int compareTo(Object o) {
 
@@ -135,11 +144,15 @@ public class Node implements Comparable{
         return 0;
     }
 
-    public boolean isDiscovered() {
-        return discovered;
+    @Override
+    public boolean equals(Object obj) {
+
+        return obj instanceof Node && ((Node) obj).nodeNum == this.nodeNum;
+
     }
 
-    public void setDiscovered(boolean discovered) {
-        this.discovered = discovered;
+    @Override
+    public String toString() {
+        return "" + nodeNum + " lat: " + latitude + " long: " + longitude + " Prev. node: " + previousNode;
     }
 }
